@@ -65,6 +65,24 @@ async def edit_product(id: int, data: dict):
 async def delete_products(id: int):
     if shop_db.get(id, None):
         del shop_db[id]     
-        return{"msg" : f"Товар с id {id}"}
+        return{"msg" : f"Товар с id {id} обновлён"}
     return{"err": "Такой товар  не существует!"}
 
+@app.put("/products/{id}" , tags=["Товары"])
+async def edit_product(id:int, data: dict):
+    if shop_db.get(id, None):
+        shop_db[id] = data
+        return{"msg" : f"Товар с id {id} обновлён"}
+    return{"err": "Такой товар  не существует!"}
+
+@app.patch("/products/{id}" , tags=["Товары"])
+async def edit_product_partialy(id:int, data: dict):
+    if shop_db.get(id, None):
+        product = shop_db[id]
+        for k,  v in data.items():
+            if product.get(k, None):
+                shop_db[id][k] = v
+
+        return {"msg" : f"Товар с id {id} обновлён"}
+    
+    return {"err": "Такой товар  не существует!"}       
