@@ -19,7 +19,7 @@ shop_db ={
     },
 }
 
-
+id_product = 3
 
 @app.get("/" , tags=["Магазин"])
 async def home():
@@ -43,11 +43,28 @@ async def add_product(data: dict):
     shop_db[id] = data  
     return {"msg" : "Товар добавлен"}
 
-@app.post("/products/{id}" , tags=["Товары"])
+@app.post("/products/" , tags=["Товары"])
 async def add_product(data: dict):
-    id: int = len(shop_db.keys())
+    global id_product
+    id: int = id_product
+    if shop_db.get(id, None):
+        shop_db[id] = data 
+        id_product += 1
+        return{"msg" : "Данные добавлены"}
+    else:
+        return{"err": "Такой товар существует!"}
+@app.put("/products/{id}" , tags=["Товары"])
+async def edit_product(id: int, data: dict):
     if shop_db.get(id, None):
         shop_db[id] = data 
         return{"msg" : "Данные добавлены"}
     else:
         return{"err": "Такой товар существует!"}
+    
+@app.delete("/products/{id}" , tags=["Товары"]) 
+async def delete_products(id: int):
+    if shop_db.get(id, None):
+        del shop_db[id]     
+        return{"msg" : f"Товар с id {id}"}
+    return{"err": "Такой товар  не существует!"}
+

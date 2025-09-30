@@ -1,7 +1,11 @@
-answer = input('Какой язык программирования мы изучаем?')
-answer_two: srt = input('Какой фремвор мы изучаем?')
-if answer == 'Python'and not answer_two == 'FastAPi':
-    print('Верно! Мы работаем с python')
-    print('Python- отличный язык')
+
+my_dict = {
+    "key" : "value",
+    "apple" : "яблоко",
+    1 : "один",
+}
+
+if my_dict.get("apple", None):
+    print(my_dict["apple"])
 else:
-    print('Неправельный ответ!')
+    print("Ключ не найден")    
